@@ -1,6 +1,13 @@
 {
   "name": "node_shared_todo_list",
   "version": "0.1.1",
+  "engines": {
+    "node": "10.15"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
   "dependencies": {
     "express": ">=3.11.0",
     "ws": ">=1.1.1",
