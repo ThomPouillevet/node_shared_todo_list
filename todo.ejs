@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Todolist partagée en temps réel</title>
+  <style>
+    a {
+      text-decoration: none;
+      color: black;
+    }
+
+    #zone_chat strong {
+      color: white;
+      background-color: black;
+      padding: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Todolist partagée en temps réel</h1>
+
+  <ul id="listeTodo">
+    <% todolist.forEach(function(todo, index) { %>
+    <li><a href="/" id="<%= index %>">✘</a> <%= todo %></li>
+    <% }); %>
+  </ul>
+
+  <form action="/" method="post" id="formulaire_todoliste">
+    <p>
+      <label for="newtodo">Que dois-je faire ?</label>
+      <input type="text" name="newtodo" id="newtodo" autofocus />
+      <input type="submit" />
+    </p>
+  </form>
+
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    // Connexion à socket.io
+    var socket = io.connect('http://localhost:8080');
+
+    // On demande le pseudo pour simplement l'afficher dans le titre
+    var pseudo = prompt('Quel est votre pseudo ?');
+    document.title = pseudo + ' - ' + document.title;
+
+    // soumission du formulaire
+    $('#formulaire_todoliste').submit(function () {
+      var task = $('#newtodo').val();
+      insereTask(task); //On ajoute immédiatement une tâche dans la page courante
+      socket.emit('new', task); // Transmet le task aux autres
+      $('#newtodo').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+      return false; // Permet de bloquer l'envoi "classique" du formulaire
+    });
+
+    // Supprime une tache identifiée par l'ID de son lien
+    $('a').click(function () {
+      socket.emit('delete', $(this).attr('id'));
+      return false;
+    });
+    //actualisation de la liste
+    socket.on('new', function (data) {
+      $('#listeTodo').html(data.task); // On injecte notre liste de tâche en format html dans la div listeTodo
+      $('a').click(function () {
+        socket.emit('delete', $(this).attr('id'));
+        return false;
+      });
+    })
+
+    // Ajoute un task dans la page courante
+    function insereTask(task) {
+      $('#listeTodo').append('<li><a id="x" >✘</a> ' + task + '</li>');
+    }
+  </script>
+</body>
+
+</html>
