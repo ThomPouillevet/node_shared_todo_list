@@ -1,12 +1,18 @@
 {
-  "name": "super-chat",
-  "version": "0.1.0",
+  "name": "node_shared_todo_list",
+  "version": "0.1.1",
   "dependencies": {
-    "express": "~3.3.4",
-    "ejs": "~2.1.4",
+    "express": ">=3.11.0",
+    "ws": ">=1.1.1",
+    "engine.io-client": ">=1.6.9",
+    "ejs": ">=2.5.5",
     "socket.io": "~1.2.1",
-    "ent": "~0.1.0"
+    "ent": "~0.1.0",
+    "fresh": ">=0.5.2",
+    "mime": ">=1.4.1",
+    "qs": ">=1.0.0",
+    "send": ">=0.11.1"
   },
   "author": "Mateo21 <mateo21@email.com>",
-  "description": "Un super Chat temps réel avec socket.io"
+  "description": "Une todo list en temps réel avec socket.io"
 }
